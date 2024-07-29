@@ -4,6 +4,7 @@
     DATE         REV  DESCRIPTION
     -----------  ---  ----------------------------------------------------------
     26-07-2024   0.3  Testing
+	29-07-2024   0.4  Add 3 different curves for RGB
      
     
     ToDo:   1)
