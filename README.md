@@ -4,6 +4,13 @@
 + 2024-7-26 Наметки
 + 2024-7-29 Ловля багов, добавление трех различных кривых для трех цветов
 
+## Детали
+Скрипт запущен на esp32-cam ручной компиляции tasmota из моего соседнего репозитория. Работает достаточно стабильно.
+
+Для проверки и тестирования загрузите `co2-ws2820.be` в файловую систему tasmota и из Berry консоли запустите `load("co2-ws2820.be")`
+
+Для автозагрузки переименуйте файл `co2-ws2820.be` в `autoexec.be`
+
 ## Задача
 
 Задача простая - плавно менять свет ws2812 в зависимости от показания датчика (в данной реализации CO2 - SCD40)
@@ -29,6 +36,14 @@ Rule2
 
 
 # Description - English
+## Details
+The script is run on a manually compiled ESP32-CAM with my neighboring Tasmota repository. It works quite stably.
+
+To test and verify, upload the `co2-ws2820.be` file to the Tasmota filesystem and launch `load("co2-ws2820.be")` from the Berry console.
+
+For automatic startup, rename the file `co2-ws2820.be` to autoexec.be.
+
+## Task
 The task is simple - smoothly change the light of ws2812 depending on the sensor reading (in this implementation, CO2 - SCD40)
 
 Rules in Tasmota work not always stably, especially if it concerns variables, and if you attempt to realize something like this:
