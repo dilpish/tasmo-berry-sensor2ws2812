@@ -15,28 +15,36 @@
  
 -#
 
+	#json for read data from tasmota
+	#math for curves
+	import json
+	import math
+	import string
+
 #- *************************************** -#
 class FOS2L : Driver
 
 	var data_colors 
-   
+    var sensor_name
+    var sensor_data
+	var min_data
+    var max_data
+    
 	#- Berry sensor2light -#
 
 	def s2l()
-		#json for read data from tasmota
-		#math for curves
-		import json
-		import math
-		import string
 		
-		# Put here your sensor name
-		var sensor_name = 'SCD40'
-		var sensor_data = 'CarbonDioxide'
+        # Put here your sensor name
+        var sensor_name = 'SCD40'
+        var sensor_data = 'CarbonDioxide'
+        
+        self.sensor_name=sensor_name
+        self.sensor_data=sensor_data
 		
-		# Put here your data range
-		var min_data = 400.0
-		var max_data = 1500.0
-		
+        # Put here your data range
+        var min_data = 400.0
+        var max_data = 1500.0
+        
 		# Read Sensor data
 		var sensors=json.load(tasmota.read_sensors())
 		if !(sensors.contains(sensor_name)) return end
@@ -93,11 +101,11 @@ class FOS2L : Driver
 	def web_sensor()
 		import string
 		if !self.data_colors return nil end               #- exit if not initialized -#	
-		var msg = string.format("{s}Sensor color: {m}<b style=\"font-color=#%s\">#%s</b>{e}",
+		var msg = string.format("{s}Sensor %s color: {m}<font color='%s'>#%s</font>{e}",
 		#		"{s}RED %.f"..
         #      "{s}GREEN %.f"..
         #      "{s}BLUE %.f"..,
-               self.data_colors,self.data_colors)
+               self.sensor_data, self.data_colors,self.data_colors)
 		tasmota.web_send(msg)
 
 	end
