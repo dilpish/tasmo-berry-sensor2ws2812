@@ -7,6 +7,7 @@
 	29-07-2024   0.4  Add 3 different curves for RGB
 	31-07-2024   0.45 fix light Color
     31-07-2024   0.49 refact all var 4 all sensors
+    01-08-2024   0.51 mqtt not working - temp disabled
      
     
     ToDo:   1)
@@ -29,11 +30,18 @@ class FOS2L : Driver
     var sensor_data
 	var min_data
     var max_data
+    var go_mqtt
+    var go_gui
     
 	#- Berry sensor2light -#
 
 	def s2l()
 		
+        # send mqtt msg
+        var go_mqtt=0
+        # show color in Tasmota GUI
+        var go_gui=1
+        
         # Put here your sensor name
         var sensor_name = 'SCD40'
         var sensor_data = 'CarbonDioxide'
@@ -83,7 +91,7 @@ class FOS2L : Driver
 		var data_color_BLUE=string.format('%02s',string.hex(int(curve_BLUE*255)))
 		self.data_colors = data_color_RED + data_color_GREEN + data_color_BLUE
 		# inline print-debug		
-        print("self.data_colors: #",self.data_colors)
+        # print("self.data_colors: #",self.data_colors)
 		return self.data_colors
 	end
 
@@ -99,22 +107,24 @@ class FOS2L : Driver
 	end
 	
 	def web_sensor()
-		import string
+        if self.go_gui==0 return nil end
 		if !self.data_colors return nil end               #- exit if not initialized -#	
-		var msg = string.format("{s}Sensor %s color: {m}<font color='%s'>#%s</font>{e}",
-		#		"{s}RED %.f"..
-        #      "{s}GREEN %.f"..
-        #      "{s}BLUE %.f"..,
-               self.sensor_data, self.data_colors,self.data_colors)
+		var msg = string.format(
+                "{s}Sensor %s color: {m}<font color='%s'>#%s</font>{e}",
+                 self.sensor_data,self.data_colors,self.data_colors)
 		tasmota.web_send(msg)
 
 	end
   
 	#- *************************************** -#
 	def json_append()
+        if self.go_mqtt==0 return nil end
 		if !self.data_colors return nil end
-		import string
-		#var msg = string.format("Sensor color: #%s", self.data_colors)
+		#var msg = string.format(',\"%s\":{\"Color\":#%s}', self.sensor_name, self.data_colors)
+        
+        # NOT WORKING
+        
+        #var msg = string.format(',"Color":%s}', self.data_colors)
 		#tasmota.response_append(msg)
 	end
   
